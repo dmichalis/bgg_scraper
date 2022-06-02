@@ -83,6 +83,5 @@ while count < flag:
     
     count += 1
     count_page += 1
-    print(count, count_page)
 
 
