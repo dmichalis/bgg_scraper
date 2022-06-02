@@ -54,7 +54,7 @@ while count < flag:
     minage = p._minage()
     dif = p._weight()
     #
-    Perform a google search
+    #Perform a google search
     query = f'{game_name}' + ' ' + 'skroutz'
     try:
         first_option = True
