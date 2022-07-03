@@ -1,7 +1,9 @@
-import numpy as np
-import requests
 import csv
 from bs4 import BeautifulSoup
+import numpy as np
+import requests
+from selenium import webdriver
+from selenium.webdriver.common.by import By
 try:
     from googlesearch import search
 except ImportError:
@@ -64,15 +66,10 @@ while count < flag:
                 skroutz_url = web_url
                 
         #get the corresponding price from skroutz.gr
-        html_skr = requests.get(skroutz_url)
-        soup_skr = BeautifulSoup(html_skr.content, 'html.parser')
-        print(soup_skr)
-        price_res = soup_skr.find('div', class_='dominant-price').text
-        key = 'από'
-        if key in price_res:
-            price_res = price_res.replace(key, '')
-        
-        price = price_res.split()[0].replace(',', '.')
+        driver = webdriver.Chrome()
+        driver.get(skroutz_url)
+        html = requests.get(skroutz_url)
+        price = driver.find_element(By.CLASS_NAME, 'dominant-price').text.split()[0].replace(',' , '.')        
     except:
         price = '-'
         skroutz_url = '-'
