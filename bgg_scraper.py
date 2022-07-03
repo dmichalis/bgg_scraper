@@ -62,15 +62,17 @@ while count < flag:
             if 'keyphrase' not in web_url and first_option == True:
                 first_option = False
                 skroutz_url = web_url
-                #get the corresponding price from skroutz.ge
-                html_skr = requests.get(skroutz_url)
-                soup_skr = BeautifulSoup(html_skr.content, 'html.parser')
-                price_res = soup_skr.find('div', class_='price').text
-                key = 'από'
-                if key in price_res:
-                    price_res = price_res.replace(key, '')
                 
-                price = price_res.split()[0].replace(',', '.')
+        #get the corresponding price from skroutz.gr
+        html_skr = requests.get(skroutz_url)
+        soup_skr = BeautifulSoup(html_skr.content, 'html.parser')
+        print(soup_skr)
+        price_res = soup_skr.find('div', class_='dominant-price').text
+        key = 'από'
+        if key in price_res:
+            price_res = price_res.replace(key, '')
+        
+        price = price_res.split()[0].replace(',', '.')
     except:
         price = '-'
         skroutz_url = '-'
