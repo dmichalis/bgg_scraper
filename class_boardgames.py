@@ -1,4 +1,3 @@
-
 import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -23,14 +22,13 @@ class Boardgames(object):
 
     #----------Get the best and suggested number of players--------------
     def _players(self):
-        elem1 = self.driver.find_element(By.XPATH, "//div[@class='gameplay-item-secondary']").text.split()
-        suggested = int(elem1[1].split('–')[1])
+        elem1 = self.driver.find_element(By.XPATH, "//div[@class='gameplay-item-secondary']").text.split()  
         try: #if one best option is available
             best = int(elem1[4])
         except:
             best = int(elem1[4].split('–')[1])
 
-        return suggested, best
+        return best
     #--------------------------------------------------- 
 
     #----------Get the average playing time--------------
