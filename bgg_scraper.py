@@ -37,7 +37,10 @@ while count < flag:
     results = soup('tr')[1:] #ignore the first entry
 
     #-----------retrieve data for each board game----------------------
-    game_name = results[count_page].find(class_ = 'primary').text
+    try:
+        game_name = results[count_page].find(class_ = 'primary').text
+    except:
+        continue
     #get the shop url
     init_url = results[count_page].find(class_ = 'primary')['href']
     bgg_url = 'https://boardgamegeek.com'+ init_url
