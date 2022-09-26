@@ -45,14 +45,8 @@ class Boardgames(object):
             max_time = int(self.driver.find_element(By.XPATH, "//li[2]/div[@class='gameplay-item-primary']/span[1]").text.split()[0])
 
         return min_time, max_time    
-        #---------------------------------------------------
-
-    #----------Get the minimum age--------------
-    def _minage(self):
-        min_age = int(self.driver.find_element(By.XPATH, "//li[3]/div[@class='gameplay-item-primary']/span[1]").text.split('+')[0])
-    
-        return min_age
     #---------------------------------------------------
+
     
     #----------Get the difficulty--------------
     def _weight(self):
