@@ -15,7 +15,10 @@ class Boardgames(object):
     
     #----------Get the max number of players--------------
     def _maxplayers(self):
-        max_players = int(self.driver.find_element(By.XPATH, "//div[@class='gameplay-item-primary']/span").text.split('–')[1])
+        try: #if one best option is available
+            max_players = int(self.driver.find_element(By.XPATH, "//div[@class='gameplay-item-primary']/span").text)
+        except:
+            max_players = int(self.driver.find_element(By.XPATH, "//div[@class='gameplay-item-primary']/span").text.split('–')[1])
 
         return max_players
     #---------------------------------------------------    
