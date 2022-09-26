@@ -21,7 +21,7 @@ url.append('https://boardgamegeek.com/browse/boardgame/page/'+str(page+1)+'?sort
 #write csv file    
 f = open('Board_games.csv', 'w', encoding='UTF8', newline='')
 header = ['Name', 'Board game url', 'BGG Rating', 'User rating', 'Total reviews', 'Max # players', 
-     'Optimal # players', 'Min playing time', 'Max playing time', 'Minimum age', 'Weight/5', 'Min price', 'Skroutz url']
+     'Optimal # players', 'Min playing time', 'Max playing time', 'Weight/5', 'Min price', 'Skroutz url']
 wr = csv.writer(f)
 wr.writerow(header)
 
@@ -53,7 +53,6 @@ while count < flag:
     max_p = p._maxplayers()
     opt_p = p._players()
     min_t, max_t = p._playingtime()
-    minage = p._minage()
     dif = p._weight()
     #
     #Perform a google search
@@ -77,7 +76,7 @@ while count < flag:
         
     #------------------Print the results in the csv file--------------------
     wr.writerow([game_name, bgg_url, bgg_rating, user_rating, votes, max_p,
-    opt_p, min_t, max_t, minage, dif, price, skroutz_url])    
+    opt_p, min_t, max_t, dif, price, skroutz_url])    
     #----------------------------------------------------------------------  
     
     count += 1
