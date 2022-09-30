@@ -54,6 +54,9 @@ while count < (start+flag-1)+blank_count:
         game_name = results[count_page].find(class_ = 'primary').text
     except:
         count += 1
+        page = count//100
+        count_page = count%100  #when the index surpasses 100, it resets because each page contains 100 board games
+        blank_count = count_page//15
         continue
 
     #get the shop url
