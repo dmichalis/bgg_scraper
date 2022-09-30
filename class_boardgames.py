@@ -22,14 +22,17 @@ class Boardgames(object):
 
         return max_players
     #---------------------------------------------------    
-
+    
     #----------Get the best and suggested number of players--------------
     def _players(self):
-        elem1 = self.driver.find_element(By.XPATH, "//div[@class='gameplay-item-secondary']").text.split()  
+        elem1 = self.driver.find_element(By.XPATH, "//div[@class='gameplay-item-secondary']").text.split()   
         try: #if one best option is available
             best = int(elem1[4])
         except:
-            best = int(elem1[4].split('–')[1])
+            try:
+                best = int(elem1[4].split('–')[1])
+            except:
+                best = int(elem1[5])
 
         return best
     #--------------------------------------------------- 
