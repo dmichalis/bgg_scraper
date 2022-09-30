@@ -27,7 +27,7 @@ if answer == 'Y':
     wr = csv.writer(f)
     wr.writerow(header)
 else:
-    start = int(input('From which line should the csv start? The number must be in the range [3-3000]')) - 2 #must have at least 1 element and remove header line
+    start = int(input('From which line should the csv start? The number must be in the range [3-3000] ')) - 1 #must have at least 1 element and remove header line
     df = pd.read_csv('Board_games.csv')
 
 #initialize necessary parameters
@@ -44,10 +44,10 @@ url.append('https://boardgamegeek.com/browse/boardgame/page/'+str(page+1)+'?sort
 while count < (start+flag-1)+blank_count:
     #retrieve the corresponding page from bgg site; each page contains 100 games
     url.append('https://boardgamegeek.com/browse/boardgame/page/'+str(page+1)+'?sort=rank')
-    
     html = requests.get(url[page])
     soup = BeautifulSoup(html.content, 'html.parser')
     results = soup('tr')[1:] #ignore the first entry
+    #print(count, page, count_page, blank_count)
     
     #-----------retrieve data for each board game----------------------
     try:
@@ -100,6 +100,10 @@ while count < (start+flag-1)+blank_count:
         wr.writerow([game_name, bgg_url, bgg_rating, user_rating, votes, max_p,
         opt_p, min_t, max_t, dif, price, skroutz_url])    
     else:
+        if len(df) > count_page-blank_count:
+            if df['Name'].values[count_page-blank_count] == game_name: #if row exists, delete it
+                df = df.drop(count_page-blank_count)
+              
         new_row = pd.Series(data={'Name':game_name , 'Board game url':bgg_url, 'BGG Rating':bgg_rating, 
                   'User rating':user_rating, 'Total reviews':votes, 'Max # players':max_p, 
                   'Optimal # players':opt_p, 'Min playing time':min_t, 'Max playing time':max_t, 
@@ -115,5 +119,4 @@ while count < (start+flag-1)+blank_count:
 #Replace the existing csv 
 if start > 1:
     df.to_csv('Board_games.csv', index=False)
-
     
