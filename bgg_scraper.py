@@ -48,7 +48,6 @@ while count < (start+flag-1)+blank_count:
     html = requests.get(url[page])
     soup = BeautifulSoup(html.content, 'html.parser')
     results = soup('tr')[1:] #ignore the first entry
-    print(count, page, count_page, blank_count)
     
     #-----------retrieve data for each board game----------------------
     try:
