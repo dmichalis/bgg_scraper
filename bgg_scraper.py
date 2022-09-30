@@ -1,8 +1,7 @@
 import numpy as np
 import pandas as pd
-import csv
 from bs4 import BeautifulSoup
-
+import csv
 import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -114,3 +113,5 @@ while count < (start+flag-1)+blank_count:
 #Replace the existing csv 
 if start > 1:
     df.to_csv('Board_games.csv', index=False)
+
+    
