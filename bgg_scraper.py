@@ -17,46 +17,42 @@ while True:
     answer = input('Do you want to create a new csv file? [Y/n] ')
     if answer == 'Y' or answer == 'n':
         break
+header = ['Name', 'Board game url', 'BGG Rating', 'User rating', 'Total reviews', 'Max # players', 
+         'Optimal # players', 'Min playing time', 'Max playing time', 'Weight/5', 'Min price', 'Skroutz url']
 
 if answer == 'Y':
     start = 1
     #write csv file    
     f = open('Board_games.csv', 'w', encoding='UTF8', newline='')
-    header = ['Name', 'Board game url', 'BGG Rating', 'User rating', 'Total reviews', 'Max # players', 
-         'Optimal # players', 'Min playing time', 'Max playing time', 'Weight/5', 'Min price', 'Skroutz url']
     wr = csv.writer(f)
     wr.writerow(header)
 else:
-    start = int(input('From which line should the csv start? The number must be in the range [3-3000] ')) - 1 #must have at least 1 element and remove header line
+    start = int(input('From which line should the csv start? The number must be in the range [3-3000] ')) -1 #must have at least 1 element and remove header line
     df = pd.read_csv('Board_games.csv')
 
 #initialize necessary parameters
 flag = int(input('How many board games do you want to retrieve from the list? '))
-blank_count = (start-1)//15  #each page contains 6 blank lines per 15 board games
+blank_count = start//15  #each page contains 6 blank lines per 15 board games
 page = (start-1)//100
 count = (start-1)+blank_count
-count_page = count%100
-url_count = 0
-url = []
-url.append('https://boardgamegeek.com/browse/boardgame/page/'+str(page+1)+'?sort=rank')
+count_page = (start-1)%100
 
 #Get the corresponding data
-while count < (start+flag-1)+blank_count:
+while count < (start-1+flag)+blank_count:
     #retrieve the corresponding page from bgg site; each page contains 100 games
-    url.append('https://boardgamegeek.com/browse/boardgame/page/'+str(page+1)+'?sort=rank')
-    html = requests.get(url[page])
+    url = 'https://boardgamegeek.com/browse/boardgame/page/'+str(page+1)+'?sort=rank'
+    html = requests.get(url)
     soup = BeautifulSoup(html.content, 'html.parser')
     results = soup('tr')[1:] #ignore the first entry
-    #print(count, page, count_page, blank_count)
     
     #-----------retrieve data for each board game----------------------
     try:
         game_name = results[count_page].find(class_ = 'primary').text
     except:
         count += 1
-        page = count//100
-        count_page = count%100  #when the index surpasses 100, it resets because each page contains 100 board games
+        count_page = (count-blank_count)%100  #when the index surpasses 100, it resets because each page contains 100 board games
         blank_count = count_page//15
+        page = count_page//100
         continue
 
     #get the shop url
@@ -94,29 +90,32 @@ while count < (start+flag-1)+blank_count:
         price = '-'
         skroutz_url = '-'
     #-----------------------------------------------------------------------
-      
+    
     #------------------Print the results in the csv file--------------------
     if start == 1:
         wr.writerow([game_name, bgg_url, bgg_rating, user_rating, votes, max_p,
         opt_p, min_t, max_t, dif, price, skroutz_url])    
     else:
-        if len(df) > count_page-blank_count:
-            if df['Name'].values[count_page-blank_count] == game_name: #if row exists, delete it
-                df = df.drop(count_page-blank_count)
-              
-        new_row = pd.Series(data={'Name':game_name , 'Board game url':bgg_url, 'BGG Rating':bgg_rating, 
+        if len(df) > count_page: #update the list
+            new_row = [game_name, bgg_url, bgg_rating, user_rating, votes, max_p, opt_p, min_t, max_t, dif, price, skroutz_url]
+            for i in range(12):
+                df[header[i]].values[count_page] = new_row[i]
+        else:
+            new_row = pd.Series(data={'Name':game_name , 'Board game url':bgg_url, 'BGG Rating':bgg_rating, 
                   'User rating':user_rating, 'Total reviews':votes, 'Max # players':max_p, 
                   'Optimal # players':opt_p, 'Min playing time':min_t, 'Max playing time':max_t, 
-                  'Weight/5':dif, 'Min price':price, 'Skroutz url':skroutz_url})
-        df = df.append(new_row, ignore_index=True)
+                  'Weight/5':dif, 'Min price':price, 'Skroutz url':skroutz_url}, name=str(count_page))
+
+            df = df.append(new_row)
     #----------------------------------------------------------------------  
-
-    count += 1
-    page = count//100
-    count_page = count%100  #when the index surpasses 100, it resets because each page contains 100 board games
+   
+    count += 1 
+    count_page = (count-blank_count)%100  #when the index surpasses 100, it resets because each page contains 100 board games
     blank_count = count_page//15
+    page = count_page//100
+    #print(count, count_page, page, blank_count)
 
-#Replace the existing csv 
+#Replace the existing csv
 if start > 1:
     df.to_csv('Board_games.csv', index=False)
     
