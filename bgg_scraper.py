@@ -38,7 +38,6 @@ blanks = ppgc//15  #each page contains 6 blank lines per 15 board games
 page = (start-1)//100
 blank_count = blanks + page*6
 game_counter = (start-1)+blank_count
-page = (start-1)//100
 
 #-----------retrieve data for each board game----------------------
 while game_counter < init_ppgc+flag+blank_count:
