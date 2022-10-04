@@ -40,7 +40,7 @@ blank_count = blanks + page*6
 game_counter = (start-1)+blank_count
 
 #-----------retrieve data for each board game----------------------
-while game_counter < init_ppgc+flag+blank_count:
+while game_counter < init_ppgc+flag+blank_count+page*100:
     #retrieve the corresponding page from bgg site; each page contains 100 games
     url = 'https://boardgamegeek.com/browse/boardgame/page/'+str(page+1)+'?sort=rank'
     html = requests.get(url)
