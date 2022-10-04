@@ -35,8 +35,9 @@ else:
 flag = int(input('How many board games do you want to retrieve from the list? '))
 ppgc, init_ppgc = (start-1)%100, (start-1)%100 #per page game counter
 blanks = ppgc//15  #each page contains 6 blank lines per 15 board games
-blank_count = blanks
-game_counter = (start-1)+blanks
+page = (start-1)//100
+blank_count = blanks + page*6
+game_counter = (start-1)+blank_count
 page = (start-1)//100
 
 #-----------retrieve data for each board game----------------------
