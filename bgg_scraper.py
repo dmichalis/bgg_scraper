@@ -87,7 +87,7 @@ while game_counter < init_ppgc+flag+blank_count+page*100:
         wr.writerow([game_name, bgg_url, bgg_rating, user_rating, votes, max_p,
         opt_p, min_t, max_t, dif, price, skroutz_url])    
     else:
-        if len(df) > ppgc: #update the list
+        iif len(df) > game_counter-blank_count: #update the list
             new_row = [game_name, bgg_url, bgg_rating, user_rating, votes, max_p, opt_p, min_t, max_t, dif, price, skroutz_url]
             for i in range(12):
                 df[header[i]].values[game_counter-blank_count] = new_row[i]
