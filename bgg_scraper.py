@@ -33,14 +33,15 @@ else:
 
 #initialize necessary parameters
 flag = int(input('How many board games do you want to retrieve from the list? '))
-ppgc, init_ppgc = (start-1)%100, (start-1)%100 #per page game counter
+ppgc = (start-1)%100 #per page game counter
 blanks = ppgc//15  #each page contains 6 blank lines per 15 board games
 page = (start-1)//100
 blank_count = blanks + page*6
 game_counter = (start-1)+blank_count
+init_gc = game_counter #a constant index
 
 #-----------retrieve data for each board game----------------------
-while game_counter < init_ppgc+flag+blank_count+page*100:
+while game_counter < init_gc+flag:
     #retrieve the corresponding page from bgg site; each page contains 100 games
     url = 'https://boardgamegeek.com/browse/boardgame/page/'+str(page+1)+'?sort=rank'
     html = requests.get(url)
