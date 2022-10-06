@@ -109,7 +109,7 @@ while game_counter < init_gc+flag:
     ppgc = (game_counter-blank_count)%100
     page = (game_counter-blank_count)//100
     
-    if ppgc == 0 and blank_count != 0:
+    if ppgc == 0 and blanks != 0:
         blanks = 0
 #----------------------------------------------------------------------  
 
