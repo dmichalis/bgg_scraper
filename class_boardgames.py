@@ -1,4 +1,3 @@
-import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
@@ -10,8 +9,7 @@ class Boardgames(object):
 
     def __init__(self, url): 
         self.driver = webdriver.Chrome() 
-        self.driver.get(url)
-        html = requests.get(url)   
+        self.driver.get(url)  
     
     #----------Get the max number of players--------------
     def _maxplayers(self):
